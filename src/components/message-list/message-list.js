@@ -1,23 +1,25 @@
-import React, {useEffect, useState } from 'react';
-import { Input, Button } from '@mui/material';
-import styles from './message-list.module.css';
-import { createStyles, makeStyles } from '@mui/styles'
-// import PropTypes from 'prop-types';
-import { Message } from './message';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Input, InputAdornment } from "@mui/material";
+import { Send } from "@mui/icons-material";
+import { makeStyles } from "@mui/styles";
+// import PropTypes from "prop-types";
+import { Message } from "./message";
 
 //jss
-const useStyles = makeStyles(() => {
+const useStyles =  makeStyles((ctx) => {
     return {
         input: {
-            color: "red",
+            color: "#9a9fa1",
             padding: "10px 15px",
-            fontSize: "15px"
-        }
-    }
-})
+            fontSize: "15px",
+        },
+        icon: {
+            color: "#2b5278",
+        },
+    };
+});
 
 export const MessageList = () => {
-
     const s = useStyles();
     const[message, setMessage] = useState([]);
     const[value, setValue] = useState();
@@ -45,21 +47,26 @@ export const MessageList = () => {
     [message])
   
     return (
-      <div className={styles.wrapper}>
+      <div>
         {message.map((message, index) => 
           <Message key={index} message={message} />
           )}
-          <input
+          <Input
               className={s.input}
-              placeholder='message'
+              fullWidth
+              placeholder="Введите сообщение..."
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyPress={handleEnter}
+              endAdornment={
+                  <InputAdornment position="end">
+                      {value && <Send onClick={sendMessage} className={s.icon} />}
+                  </InputAdornment>
+              }
           />
-          <button onClick={sendMessage}>send message</button>
       </div>
     )
-  };
+};
   
   // MessageList.propTypes = {
   //   test1: PropTypes.number.isRequired,
